@@ -6,9 +6,11 @@ import { LibraryAdd } from '@mui/icons-material';
 import styles from './styles';
 import { generateRandomVideo } from './utils';
 import VideoFrame from 'app/components/VideoFrame';
+import AddToPlaylist from 'app/components/AddToPlaylist';
 
 function Homepage() {
   const [idVideo, setIdVideo] = useState("");
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleGenerateRandomVideo = () => {
     setIdVideo(generateRandomVideo());
@@ -20,6 +22,11 @@ function Homepage() {
 
   const handleAddToPlaylist = () => {
     // Show modal and api call to add video to playlist
+    setIsOpenModal(true);
+  }
+
+  const onCloseModal = () => {
+    setIsOpenModal(false);
   }
 
   return (
@@ -41,6 +48,7 @@ function Homepage() {
         <Button
           variant='contained'
           onClick={handleDownloadVideo}
+          disabled={idVideo === ''}
         >
           Download
         </Button>
@@ -49,9 +57,12 @@ function Homepage() {
         variant='contained'
         startIcon={<LibraryAdd />}
         onClick={handleAddToPlaylist}
+        disabled={idVideo === ''}
       >
         Add to Playlist
       </Button>
+
+      {isOpenModal && <AddToPlaylist idVideo={idVideo} isOpen={isOpenModal} onCloseModal={onCloseModal} />}
     </View>
   )
 }
