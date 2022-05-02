@@ -5,7 +5,7 @@ import { LibraryAdd } from '@mui/icons-material';
 
 import styles from './styles';
 import { generateRandomVideo } from './utils';
-import VideoFrame from './VideoFrame';
+import VideoFrame from 'app/components/VideoFrame';
 
 function Homepage() {
   const [idVideo, setIdVideo] = useState("");
