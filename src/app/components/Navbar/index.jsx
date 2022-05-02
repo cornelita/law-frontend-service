@@ -44,7 +44,7 @@ function Navbar(props) {
 }
 
 Navbar.defaultProps = {
-  isUserLoggedIn: true,
+  isUserLoggedIn: false,
 };
 
 Navbar.propTypes = {
