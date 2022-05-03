@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router';
 
 import Navbar from 'app/components/Navbar';
 import Footer from 'app/components/Footer';
-import { Homepage, Playlist, Process, SignUp, Login} from 'app/pages'
+import { Homepage, Playlist, Process, SignUp, Login } from 'app/pages';
 
 const s = StyleSheet.create({
   bodyContainer: {
@@ -18,7 +18,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 48,
     backgroundColor: '#F9F9F9',
     flex: '1 0 auto',
-  }
+  },
 });
 
 function App() {

@@ -11,9 +11,7 @@ function ProcessStatus(props) {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12}>
-        <Text style={cStyles.body1}>
-          Download {idVideo}
-        </Text>
+        <Text style={cStyles.body1}>Download {idVideo}</Text>
       </Grid>
       <Grid item xs={11} sx={{ marginTop: 1.25 }}>
         <LinearProgress variant="determinate" value={progress} />
@@ -22,7 +20,7 @@ function ProcessStatus(props) {
         <Text>{`${progress}%`}</Text>
       </Grid>
     </Grid>
-  )
+  );
 }
 
 ProcessStatus.propTypes = {

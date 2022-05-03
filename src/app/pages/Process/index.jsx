@@ -11,18 +11,16 @@ function Process() {
 
   return (
     <View>
-      <Text style={styles.pageTitle}>
-        Background Process
-      </Text>
+      <Text style={styles.pageTitle}>Background Process</Text>
       <Grid container columnSpacing={8} rowSpacing={2.5}>
-        {allProcess.map(({id, data, progress}) => (
+        {allProcess.map(({ id, data, progress }) => (
           <Grid item xs={6} key={id}>
             <ProcessStatus idVideo={data} progress={progress} />
           </Grid>
         ))}
       </Grid>
     </View>
-  )
+  );
 }
 
 export default Process;

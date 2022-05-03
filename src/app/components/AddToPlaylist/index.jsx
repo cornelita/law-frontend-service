@@ -1,7 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Add, Close } from '@mui/icons-material';
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControlLabel, IconButton, TextField } from '@mui/material';
+import {
+  Button,
+  Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  FormControlLabel,
+  IconButton,
+  TextField,
+} from '@mui/material';
 import { getAllPlaylistByUser } from './utils';
 import { View } from 'react-native-web';
 
@@ -19,12 +30,10 @@ function AddToPlaylist(props) {
       // Remove from playlist
       // console.log("uncheck")
     }
-  }
+  };
 
   return (
-    <Dialog
-      open={isOpen}
-    >
+    <Dialog open={isOpen}>
       <DialogTitle display={'flex'} justifyContent={'space-between'}>
         Add to playlist
         <IconButton onClick={onCloseModal}>
@@ -35,35 +44,36 @@ function AddToPlaylist(props) {
 
       <DialogContent>
         <View>
-          {allPlaylist.map(({id, name}) => (
-            <FormControlLabel key={`playlist-${id}`} control={<Checkbox />} label={`${id}-${name}`} value={id} onChange={handleCheckboxClick} />
+          {allPlaylist.map(({ id, name }) => (
+            <FormControlLabel
+              key={`playlist-${id}`}
+              control={<Checkbox />}
+              label={`${id}-${name}`}
+              value={id}
+              onChange={handleCheckboxClick}
+            />
           ))}
         </View>
       </DialogContent>
       <Divider sx={{ borderWidth: 8 }} />
 
-      <DialogTitle>
-        Create a new playlist
-      </DialogTitle>
+      <DialogTitle>Create a new playlist</DialogTitle>
       <Divider />
 
-    <DialogContent sx={{ minHeight: 120 }}>
+      <DialogContent sx={{ minHeight: 120 }}>
         <TextField
-          label='Playlist Name'
-          variant='standard' 
+          label="Playlist Name"
+          variant="standard"
           sx={{ minWidth: '320px' }}
         />
         <DialogActions sx={{ padding: 0, paddingTop: 2.5 }}>
-          <Button
-            variant='contained'
-            startIcon={<Add />}
-          >
+          <Button variant="contained" startIcon={<Add />}>
             Create
           </Button>
         </DialogActions>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 AddToPlaylist.propTypes = {

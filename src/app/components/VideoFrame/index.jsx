@@ -6,7 +6,7 @@ import { ArrowDownward } from '@mui/icons-material';
 function VideoFrame(props) {
   const { idVideo } = props;
 
-  if (idVideo !== "") {
+  if (idVideo !== '') {
     return (
       <iframe
         width="480"
@@ -17,7 +17,7 @@ function VideoFrame(props) {
         allowFullScreen
         title="Embedded youtube"
       />
-    )
+    );
   }
 
   return (
@@ -39,11 +39,11 @@ function VideoFrame(props) {
         </Text>
       </Text>
     </View>
-  )
+  );
 }
 
 VideoFrame.defaultProps = {
-  idVideo: "",
+  idVideo: '',
 };
 
 VideoFrame.propTypes = {

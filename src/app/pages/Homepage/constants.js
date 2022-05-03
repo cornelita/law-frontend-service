@@ -3,4 +3,4 @@ export const YOUTUBE_VIDEOS = [
   'qYvXk_bqlBk',
   'rrkrvAUbU9Y',
   'cdZZpaB2kDM',
-]
+];

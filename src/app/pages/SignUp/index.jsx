@@ -6,7 +6,7 @@ import {
   Grid,
   Box,
   Typography,
-  Container
+  Container,
 } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
 import { View, Text } from 'react-native-web';
@@ -26,9 +26,7 @@ function SignUp() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.pageTitle}>
-        Welcome to Kami Random!
-      </Text>
+      <Text style={styles.pageTitle}>Welcome to Kami Random!</Text>
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
@@ -44,7 +42,12 @@ function SignUp() {
           <Typography component="h1" variant="h5">
             Let's create an account!
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -99,9 +102,7 @@ function SignUp() {
             </Button>
             <Grid container>
               <Grid item>
-                <NavLink to="/login">
-                  Already have an account? Login
-                </NavLink>
+                <NavLink to="/login">Already have an account? Login</NavLink>
               </Grid>
             </Grid>
           </Box>
