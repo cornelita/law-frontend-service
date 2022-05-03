@@ -7,17 +7,23 @@ import Footer from 'app/components/Footer';
 import { Homepage, Playlist, Process, SignUp, Login} from 'app/pages'
 
 const s = StyleSheet.create({
+  bodyContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+  },
   main: {
     paddingTop: 96,
     paddingBottom: 32,
     paddingHorizontal: 48,
     backgroundColor: '#F9F9F9',
+    flex: '1 0 auto',
   }
 });
 
 function App() {
   return (
-    <>
+    <View style={s.bodyContainer}>
       <Navbar />
       <View style={s.main}>
         <Routes>
@@ -30,7 +36,7 @@ function App() {
         </Routes>
       </View>
       <Footer />
-    </>
+    </View>
   );
 }
 
