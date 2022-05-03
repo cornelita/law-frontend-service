@@ -3,8 +3,8 @@ import { View, Text } from 'react-native-web';
 import { Button } from '@mui/material';
 import { LibraryAdd } from '@mui/icons-material';
 
-import styles from './styles';
 import { generateRandomVideo } from './utils';
+import styles from 'app/pages/styles';
 import VideoFrame from 'app/components/VideoFrame';
 import AddToPlaylist from 'app/components/AddToPlaylist';
 
