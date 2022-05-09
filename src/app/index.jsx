@@ -1,7 +1,10 @@
 import React from 'react';
+import axios from 'axios';
 import { StyleSheet, View, Text } from 'react-native-web';
 import { Route, Routes } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { runLogoutTimer } from 'app/reducers/auth';
 import Navbar from 'app/components/Navbar';
 import Footer from 'app/components/Footer';
 import { Homepage, Playlist, Process, SignUp, Login } from 'app/pages';
@@ -22,9 +25,15 @@ const s = StyleSheet.create({
 });
 
 function App() {
+  const dispatch = useDispatch();
+  const { token, expiry } = useSelector((state) => state.auth.value);
+
+  runLogoutTimer(dispatch, expiry);
+  axios.defaults.headers.common.Authorization = `Token ${token}`;
+
   return (
     <View style={s.bodyContainer}>
-      <Navbar />
+      <Navbar isUserLoggedIn={token !== ''} />
       <View style={s.main}>
         <Routes>
           <Route exact path="/" element={<Homepage />} />
