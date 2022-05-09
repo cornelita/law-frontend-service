@@ -38,7 +38,6 @@ function Login() {
     );
 
     if (response instanceof Error) {
-      console.log(response);
       setSnackbarMessage(response.message);
       setShowSnackbar(true);
       return;
