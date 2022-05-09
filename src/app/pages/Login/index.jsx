@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Avatar,
   Button,
@@ -7,21 +7,49 @@ import {
   Box,
   Typography,
   Container,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
 import { View, Text } from 'react-native-web';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
+import { loginUser } from 'app/reducers/auth/api';
 import styles from 'app/pages/styles';
 
 function Login() {
-  const handleSubmit = (event) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    const response = await loginUser(
+      {
+        username: data.get('username'),
+        password: data.get('password'),
+      },
+      dispatch,
+    );
+
+    if (response instanceof Error) {
+      console.log(response);
+      setSnackbarMessage(response.message);
+      setShowSnackbar(true);
+      return;
+    }
+
+    navigate('/');
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarMessage('');
+    setShowSnackbar(false);
   };
 
   return (
@@ -84,6 +112,23 @@ function Login() {
           </Box>
         </Box>
       </Container>
+
+      <Snackbar
+        open={showSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        sx={{ width: '80vw', bottom: 448 }}
+      >
+        <Alert
+          severity="error"
+          variant="filled"
+          onClose={handleCloseSnackbar}
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </View>
   );
 }
