@@ -1,4 +1,4 @@
-export const NAVBAR_SECTIONS = [
+export const NAVBAR_SECTIONS_GENERAl = [
   {
     title: 'Home',
     path: '',
@@ -13,7 +13,7 @@ export const NAVBAR_SECTIONS = [
   },
 ];
 
-export const NAVBAR_SECTIONS_WITH_LOGIN = NAVBAR_SECTIONS.concat([
+export const NAVBAR_SECTIONS_WITH_LOGIN = NAVBAR_SECTIONS_GENERAl.concat([
   {
     title: 'Sign Up',
     path: 'signup',
@@ -21,12 +21,5 @@ export const NAVBAR_SECTIONS_WITH_LOGIN = NAVBAR_SECTIONS.concat([
   {
     title: 'Login',
     path: 'login',
-  },
-]);
-
-export const NAVBAR_SECTIONS_WITH_LOGOUT = NAVBAR_SECTIONS.concat([
-  {
-    title: 'Logout',
-    path: 'logout',
   },
 ]);

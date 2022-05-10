@@ -1,22 +1,38 @@
 import React from 'react';
 import { AppBar, Toolbar, Avatar, Button } from '@mui/material';
 import { View, Text } from 'react-native-web';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import styles from 'app/commons/styles';
+import { logoutUser } from 'app/reducers/auth/api';
 
 import {
   NAVBAR_SECTIONS_WITH_LOGIN,
-  NAVBAR_SECTIONS_WITH_LOGOUT,
+  NAVBAR_SECTIONS_GENERAl,
 } from './constants';
 
 function Navbar(props) {
   const { isUserLoggedIn } = props;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { name } = useSelector((state) => state.auth.value);
 
   const NAVBAR_SECTIONS = isUserLoggedIn
-    ? NAVBAR_SECTIONS_WITH_LOGOUT
+    ? NAVBAR_SECTIONS_GENERAl
     : NAVBAR_SECTIONS_WITH_LOGIN;
+
+  const handleLogout = async () => {
+    const response = await logoutUser(dispatch);
+    if (response instanceof Error) {
+      alert(response.message);
+      return;
+    }
+
+    navigate('/login');
+  };
 
   return (
     <AppBar sx={{ backgroundColor: '#FFF', paddingLeft: 3, paddingRight: 3 }}>
@@ -40,7 +56,12 @@ function Navbar(props) {
           ))}
 
           {isUserLoggedIn && (
-            <Button sx={{ fontWeight: '700' }}>Hello, Name 👋</Button>
+            <>
+              <Button sx={{ fontWeight: '700 ' }} onClick={handleLogout}>
+                Logout
+              </Button>
+              <Button sx={{ fontWeight: '700' }}>Hello, {name} 👋</Button>
+            </>
           )}
         </View>
       </Toolbar>
