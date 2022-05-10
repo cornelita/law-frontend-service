@@ -56,3 +56,33 @@ export const logoutUser = async (dispatch) => {
     return new Error(message);
   }
 };
+
+export const registerUser = async (userData) => {
+  axios.defaults.headers.common.Authorization = null;
+  try {
+    const response = await axios.post(
+      `${config.API_AUTH_URL}/api/register/`,
+      userData,
+    );
+
+    if (response.status !== 200) {
+      const message = `Error: ${
+        response.data?.email ||
+        response.data?.non_field_errors ||
+        response.data?.error ||
+        'Please make sure the data is correct and try again later'
+      }`;
+      return new Error(message);
+    }
+
+    return response.data;
+  } catch (err) {
+    const message = `Error: ${
+      err.response?.data?.email ||
+      err.response?.data?.non_field_errors ||
+      err.response?.data?.error ||
+      'Please make sure the data is correct and try again later'
+    }`;
+    return new Error(message);
+  }
+};
