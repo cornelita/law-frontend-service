@@ -59,11 +59,12 @@ export const createPlaylist = async (playlistName, video) => {
     // )
     const response = dummyResponse;
     return response.data;
-  } catch (e) {
-    alert(
-      e.response?.description ||
-        'Failed creating playlist, please try again later!',
-    );
+  } catch (err) {
+    const message = `Error: ${
+      err.response?.data?.description ||
+      'Failed creating playlist, please try again later!'
+    }`;
+    return new Error(message);
   }
 };
 
@@ -79,11 +80,12 @@ export const getPlaylistById = async (id) => {
     // )
     const response = dummyResponse;
     return response.data;
-  } catch (e) {
-    alert(
-      e.response?.description ||
-        'Failed retrieving playlist, please try again later!',
-    );
+  } catch (err) {
+    const message = `Error: ${
+      err.response?.data?.description ||
+      'Failed retrieving playlist, please try again later!'
+    }`;
+    return new Error(message);
   }
 };
 
@@ -98,10 +100,12 @@ export const addVideoToPlaylist = async (id, video) => {
     // )
     const response = dummyResponse;
     return response.data;
-  } catch (e) {
-    alert(
-      e.response?.description || 'Failed to add video, please try again later!',
-    );
+  } catch (err) {
+    const message = `Error: ${
+      err.response?.data?.description ||
+      'Failed to add video, please try again later!'
+    }`;
+    return new Error(message);
   }
 };
 
@@ -117,11 +121,12 @@ export const deletePlaylist = async (id) => {
     // )
     const response = dummyDeletedPlaylistResponse;
     return response.data;
-  } catch (e) {
-    alert(
-      e.response?.description ||
-        'Failed to delete video, please try again later!',
-    );
+  } catch (err) {
+    const message = `Error: ${
+      err.response?.data?.description ||
+      'Failed to delete playlist, please try again later!'
+    }`;
+    return new Error(message);
   }
 };
 
@@ -136,11 +141,12 @@ export const deleteVideoFromPlaylist = async (id, video) => {
     // )
     const response = dummyDeletedVideoResponse;
     return response.data;
-  } catch (e) {
-    alert(
-      e.response?.description ||
-        'Failed to delete video, please try again later!',
-    );
+  } catch (err) {
+    const message = `Error: ${
+      err.response?.data?.description ||
+      'Failed to delete video, please try again later!'
+    }`;
+    return new Error(message);
   }
 };
 
@@ -156,10 +162,11 @@ export const getAllPlaylistByUser = async (username) => {
     // )
     const response = dummiesResponse;
     return response.data;
-  } catch (e) {
-    alert(
-      e.response?.description ||
-        'Failed retrieving playlist, please try again later!',
-    );
+  } catch (err) {
+    const message = `Error: ${
+      err.response?.data?.description ||
+      'Failed retrieving playlist, please try again later!'
+    }`;
+    return new Error(message);
   }
 };
