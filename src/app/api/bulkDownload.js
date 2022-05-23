@@ -29,17 +29,33 @@ export const getBulkDownload = async (bulkDownloadId) => {
         params: {
           bulkDownloadId,
         },
-      },
-      {
         responseType: 'blob',
       },
     );
-    FileDownload(response.data, `video-${Date.now()}.zip`);
-    return response;
+
+    return FileDownload(response.data, `video-${Date.now()}.zip`);
   } catch (err) {
     const message = `Error: ${
       err.response?.data?.detail ||
       'Get Bulk Download failed, please try again later!'
+    }`;
+    return new Error(message);
+  }
+};
+
+export const getAllBulkDownload = async (bulkDownloadIds) => {
+  try {
+    const response = await axios.post(
+      `${config.API_BULK_DOWNLOAD_URL}/bulk-download/all/`,
+      {
+        bulkDownloadIds,
+      },
+    );
+    return response.data;
+  } catch (err) {
+    const message = `Error: ${
+      err.response?.data?.detail ||
+      'Get All Bulk Download failed, please try again later!'
     }`;
     return new Error(message);
   }

@@ -29,8 +29,6 @@ export const getDownload = async (videoId) => {
         params: {
           videoId,
         },
-      },
-      {
         responseType: 'blob',
       },
     );
