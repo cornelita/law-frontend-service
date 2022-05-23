@@ -6,10 +6,10 @@ import PropTypes from 'prop-types';
 import cStyles from 'app/commons/styles';
 import { getBulkDownload } from 'app/api/bulkDownload';
 import { useDispatch } from 'react-redux';
-import { removeBulkDownload } from 'app/reducers/download';
+import { removeBulkDownload, removeDownload } from 'app/reducers/download';
 
 function ProcessStatus(props) {
-  const { idVideo, data, progress } = props;
+  const { idVideo, data, progress, type } = props;
   const dispatch = useDispatch();
 
   const getDownloadData = async () => {
@@ -17,7 +17,8 @@ function ProcessStatus(props) {
     if (response instanceof Error) {
       alert(response.message);
     } else {
-      dispatch(removeBulkDownload(idVideo));
+      if (type === 'bulk') dispatch(removeBulkDownload(idVideo));
+      else dispatch(removeDownload(idVideo));
     }
   };
 
@@ -48,6 +49,7 @@ ProcessStatus.propTypes = {
   data: PropTypes.string.isRequired,
   progress: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     .isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default ProcessStatus;

@@ -34,7 +34,12 @@ function Process() {
         <Grid container columnSpacing={8} rowSpacing={2.5}>
           {allBulkDownload.map(({ id, data, progress }) => (
             <Grid item xs={6} key={id}>
-              <ProcessStatus idVideo={id} data={data} progress={progress} />
+              <ProcessStatus
+                idVideo={id}
+                data={data}
+                progress={progress}
+                type="bulk"
+              />
             </Grid>
           ))}
 
@@ -51,7 +56,12 @@ function Process() {
         <Grid container columnSpacing={8} rowSpacing={2.5}>
           {allDownload.map(({ id, data, progress }) => (
             <Grid item xs={6} key={id}>
-              <ProcessStatus idVideo={id} data={data} progress={progress} />
+              <ProcessStatus
+                idVideo={id}
+                data={data}
+                progress={progress}
+                type="download"
+              />
             </Grid>
           ))}
 
