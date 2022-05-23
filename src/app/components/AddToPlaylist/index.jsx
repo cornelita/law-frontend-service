@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Add, Close } from '@mui/icons-material';
 import {
@@ -13,23 +13,75 @@ import {
   IconButton,
   TextField,
 } from '@mui/material';
-import { getAllPlaylistByUser } from './utils';
+import {
+  addVideoToPlaylist,
+  createPlaylist,
+  deleteVideoFromPlaylist,
+  getAllPlaylistByUser,
+} from 'app/api/playlist';
 import { View } from 'react-native-web';
+import { useSelector } from 'react-redux';
 
 function AddToPlaylist(props) {
-  const { isOpen, onCloseModal } = props;
-  const allPlaylist = getAllPlaylistByUser();
+  const { idVideo, isOpen, onCloseModal } = props;
+  const [allPlaylist, setAllPlaylist] = useState([]);
+  const [playlistName, setPlaylistName] = useState('');
+  const { username } = useSelector((state) => state.auth.value);
 
-  const handleCheckboxClick = (event) => {
+  useEffect(() => {
+    const getData = async () => {
+      const response = await getAllPlaylistByUser(username);
+      if (response instanceof Error) {
+        alert(response.message);
+      } else {
+        setAllPlaylist(response.data);
+      }
+    };
+
+    getData();
+  });
+
+  const handlePlaylistNameChange = (event) => {
+    setPlaylistName(event.target.value);
+  };
+
+  const onClickCreatePlaylist = async () => {
+    const response = await createPlaylist(playlistName, idVideo);
+
+    if (response instanceof Error) {
+      alert(response.message);
+    } else {
+      alert(`Playlist created!`);
+    }
+    setPlaylistName('');
+    onCloseModal();
+  };
+
+  const handleCheckboxClick = async (event) => {
     // Notes: Does it change playlist when user check/uncheck it? Will it cause too much API call?
     if (event.target.checked) {
       // Add to playlist
-      // console.log(event.target.checked)
-      // console.log(event.target.value)
+      const response = await addVideoToPlaylist(event.target.value, idVideo);
+      if (response instanceof Error) {
+        alert(response.message);
+      } else {
+        alert(`Success add video to playlist with id=${event.target.value}!`);
+      }
     } else {
       // Remove from playlist
-      // console.log("uncheck")
+      const response = await deleteVideoFromPlaylist(
+        event.target.value,
+        idVideo,
+      );
+      if (response instanceof Error) {
+        alert(response.message);
+      } else {
+        alert(
+          `Success delete video from playlist with id=${event.target.value}!`,
+        );
+      }
     }
+    onCloseModal();
   };
 
   return (
@@ -44,11 +96,11 @@ function AddToPlaylist(props) {
 
       <DialogContent>
         <View>
-          {allPlaylist.map(({ id, name }) => (
+          {allPlaylist.map(({ id, playlist_name, videos }) => (
             <FormControlLabel
               key={`playlist-${id}`}
-              control={<Checkbox />}
-              label={`${id}-${name}`}
+              control={<Checkbox checked={videos.indexOf(idVideo) !== -1} />}
+              label={playlist_name}
               value={id}
               onChange={handleCheckboxClick}
             />
@@ -65,9 +117,14 @@ function AddToPlaylist(props) {
           label="Playlist Name"
           variant="standard"
           sx={{ minWidth: '320px' }}
+          onChange={handlePlaylistNameChange}
         />
         <DialogActions sx={{ padding: 0, paddingTop: 2.5 }}>
-          <Button variant="contained" startIcon={<Add />}>
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={onClickCreatePlaylist}
+          >
             Create
           </Button>
         </DialogActions>

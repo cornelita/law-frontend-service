@@ -5,20 +5,22 @@ import { Button, Grid, Link } from '@mui/material';
 import cStyles from 'app/commons/styles';
 import styles from 'app/pages/styles';
 import PlaylistCard from 'app/components/PlaylistCard';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllPlaylistByUser } from 'app/api/playlist';
 import { useNavigate } from 'react-router-dom';
 import { bulkDownload } from 'app/api/bulkDownload';
+import { addBulkDownload } from 'app/reducers/download';
 
 function Playlist() {
   const { username } = useSelector((state) => state.auth.value);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [allPlaylist, setAllPlaylist] = useState([]);
   const [visibleDetailPlaylist, setVisibleDetailPlaylist] = useState(null);
 
   useEffect(() => {
-    if (username === '') {
+    if (username === undefined || username === '') {
       navigate('/');
       return;
     }
@@ -41,6 +43,7 @@ function Playlist() {
     if (response instanceof Error) {
       alert(response.message);
     } else {
+      dispatch(addBulkDownload(response.bulkDownloadId));
       alert(`Success: ${response.bulkDownloadId}`);
     }
   };
