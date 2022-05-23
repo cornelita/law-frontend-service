@@ -22,24 +22,45 @@ function ProcessStatus(props) {
     }
   };
 
+  const removeDownloadData = () => {
+    if (type === 'bulk') dispatch(removeBulkDownload(idVideo));
+    else dispatch(removeDownload(idVideo));
+  };
+
   return (
     <Grid container spacing={1}>
-      <Grid item xs={8}>
+      <Grid item xs={9}>
         <Text style={cStyles.body1}>{data}</Text>
       </Grid>
-      <Grid item xs={4}>
-        {progress === '100' && (
+      <Grid item xs={3}>
+        {String(progress) === '100' ? (
           <Button variant="contained" onClick={getDownloadData}>
             Download
           </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="error"
+            onClick={removeDownloadData}
+          >
+            Remove
+          </Button>
         )}
       </Grid>
-      <Grid item xs={11} sx={{ marginTop: 1.25 }}>
-        <LinearProgress variant="determinate" value={parseInt(progress)} />
-      </Grid>
-      <Grid item xs={1}>
-        <Text>{`${progress}%`}</Text>
-      </Grid>
+      {String(progress) !== '-1' ? (
+        <>
+          <Grid item xs={11} sx={{ marginTop: 1.25 }}>
+            <LinearProgress variant="determinate" value={parseInt(progress)} />
+          </Grid>
+          <Grid item xs={1}>
+            <Text>{`${String(progress).split('.')[0]}%`}</Text>
+          </Grid>
+        </>
+      ) : (
+        <Grid item xs={12} sx={{ marginTop: 1.25 }}>
+          <Text>Job failed!</Text>
+        </Grid>
+      )}
     </Grid>
   );
 }
