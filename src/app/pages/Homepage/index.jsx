@@ -7,17 +7,30 @@ import { generateRandomVideo } from './utils';
 import styles from 'app/pages/styles';
 import VideoFrame from 'app/components/VideoFrame';
 import AddToPlaylist from 'app/components/AddToPlaylist';
+import { useDispatch, useSelector } from 'react-redux';
+import { download } from 'app/api/download';
+import { addDownload } from 'app/reducers/download';
 
 function Homepage() {
+  const dispatch = useDispatch();
+
   const [idVideo, setIdVideo] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { username } = useSelector((state) => state.auth.value);
 
   const handleGenerateRandomVideo = () => {
     setIdVideo(generateRandomVideo());
   };
 
-  const handleDownloadVideo = () => {
+  const handleDownloadVideo = async () => {
     // api call to download video
+    const response = await download(idVideo);
+    if (response instanceof Error) {
+      alert(response.message);
+    } else {
+      dispatch(addDownload(response.downloadId));
+      alert(`Success: ${response.downloadId}`);
+    }
   };
 
   const handleAddToPlaylist = () => {
@@ -51,14 +64,16 @@ function Homepage() {
           Download
         </Button>
       </View>
-      <Button
-        variant="contained"
-        startIcon={<LibraryAdd />}
-        onClick={handleAddToPlaylist}
-        disabled={idVideo === ''}
-      >
-        Add to Playlist
-      </Button>
+      {username !== undefined && username !== '' && (
+        <Button
+          variant="contained"
+          startIcon={<LibraryAdd />}
+          onClick={handleAddToPlaylist}
+          disabled={idVideo === ''}
+        >
+          Add to Playlist
+        </Button>
+      )}
 
       {isOpenModal && (
         <AddToPlaylist
