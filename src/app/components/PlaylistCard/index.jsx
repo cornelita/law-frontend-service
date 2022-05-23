@@ -43,7 +43,7 @@ function PlaylistCard(props) {
 
 PlaylistCard.propTypes = {
   playlistData: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     playlist_name: PropTypes.string,
     videos: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
