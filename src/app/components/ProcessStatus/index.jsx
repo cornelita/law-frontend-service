@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { Text } from 'react-native-web';
 import { Button, Grid, LinearProgress } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -7,10 +7,50 @@ import cStyles from 'app/commons/styles';
 import { getBulkDownload } from 'app/api/bulkDownload';
 import { useDispatch } from 'react-redux';
 import { removeBulkDownload, removeDownload } from 'app/reducers/download';
+import config from 'app/config';
 
 function ProcessStatus(props) {
-  const { idVideo, data, progress, type } = props;
+  const { idVideo, type } = props;
   const dispatch = useDispatch();
+  const [progress, setProgress] = useState(0);
+  const client = useMemo(
+    () =>
+      new WebSocket(
+        `${config.WS_BULK_DOWNLOAD_URL}/ws/bulk-download/${idVideo}/`,
+      ),
+    [idVideo],
+  );
+
+  let idInterval;
+
+  client.onopen = () => {
+    client.send(
+      JSON.stringify({
+        bulkDownloadIds: idVideo,
+      }),
+    );
+
+    if (idInterval !== undefined) {
+      clearInterval(idInterval);
+    }
+
+    idInterval = setInterval(() => {
+      client.send(
+        JSON.stringify({
+          bulkDownloadIds: idVideo,
+        }),
+      );
+    }, 5000);
+  };
+
+  client.onclose = () => {
+    clearInterval(idInterval);
+  };
+
+  client.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+    setProgress(data.message);
+  };
 
   const getDownloadData = async () => {
     const response = await getBulkDownload(idVideo);
@@ -30,7 +70,7 @@ function ProcessStatus(props) {
   return (
     <Grid container spacing={1}>
       <Grid item xs={9}>
-        <Text style={cStyles.body1}>{data}</Text>
+        <Text style={cStyles.body1}>{idVideo}</Text>
       </Grid>
       <Grid item xs={3}>
         {String(progress) === '100' ? (
@@ -67,9 +107,6 @@ function ProcessStatus(props) {
 
 ProcessStatus.propTypes = {
   idVideo: PropTypes.string.isRequired,
-  data: PropTypes.string.isRequired,
-  progress: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-    .isRequired,
   type: PropTypes.string.isRequired,
 };
 
