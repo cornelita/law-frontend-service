@@ -35,6 +35,7 @@ function ProcessStatus(props) {
     }
 
     idInterval = setInterval(() => {
+      if (progress === '100') clearInterval(idInterval);
       client.send(
         JSON.stringify({
           bulkDownloadIds: idVideo,
@@ -50,12 +51,12 @@ function ProcessStatus(props) {
   client.onmessage = (e) => {
     const data = JSON.parse(e.data);
     setProgress(data.message);
-    if (data.message === '100') clearInterval(idInterval);
   };
 
   useEffect(() => {
     return () => {
       clearInterval(idInterval);
+      client.close();
     };
   });
 
