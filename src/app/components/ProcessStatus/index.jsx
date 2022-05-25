@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Text } from 'react-native-web';
 import { Button, Grid, LinearProgress } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -50,7 +50,14 @@ function ProcessStatus(props) {
   client.onmessage = (e) => {
     const data = JSON.parse(e.data);
     setProgress(data.message);
+    if (data.message === '100') clearInterval(idInterval);
   };
+
+  useEffect(() => {
+    return () => {
+      clearInterval(idInterval);
+    };
+  });
 
   const getDownloadData = async () => {
     const response = await getBulkDownload(idVideo);
