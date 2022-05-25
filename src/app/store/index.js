@@ -12,9 +12,11 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import authReducer from '../reducers/auth';
+import downloadReducer from '../reducers/download';
 
 const reducers = combineReducers({
   auth: authReducer,
+  download: downloadReducer,
 });
 
 const persistConfig = {

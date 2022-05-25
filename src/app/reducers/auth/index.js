@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { clearBulkDownload } from '../download';
 
 export const initialAuthState = {
   email: '',
@@ -37,6 +38,7 @@ export const runLogoutTimer = (dispatch, expiry) => {
 
   setTimeout(() => {
     dispatch(logout());
+    dispatch(clearBulkDownload());
   }, timer);
 };
 

@@ -1,15 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView } from 'react-native-web';
-import { Button, Grid } from '@mui/material';
+import { Button, Grid, Link } from '@mui/material';
 
 import cStyles from 'app/commons/styles';
 import styles from 'app/pages/styles';
 import PlaylistCard from 'app/components/PlaylistCard';
-import { getAllPlaylist } from './utils';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllPlaylistByUser } from 'app/api/playlist';
+import { useNavigate } from 'react-router-dom';
+import { bulkDownload } from 'app/api/bulkDownload';
+import { addBulkDownload } from 'app/reducers/download';
 
 function Playlist() {
-  const allPlaylist = getAllPlaylist();
+  const { username } = useSelector((state) => state.auth.value);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [allPlaylist, setAllPlaylist] = useState([]);
   const [visibleDetailPlaylist, setVisibleDetailPlaylist] = useState(null);
+
+  useEffect(() => {
+    if (username === undefined || username === '') {
+      navigate('/');
+      return;
+    }
+
+    const getData = async () => {
+      const response = await getAllPlaylistByUser(username);
+
+      if (response instanceof Error) {
+        alert(response.message);
+      } else {
+        setAllPlaylist(response.data);
+      }
+    };
+
+    getData();
+  });
+
+  const handleOnClickDownloadAll = async (videos) => {
+    const response = await bulkDownload(videos);
+    if (response instanceof Error) {
+      alert(response.message);
+    } else {
+      dispatch(addBulkDownload(response.bulkDownloadId));
+      alert(`Success: ${response.bulkDownloadId}`);
+    }
+  };
 
   return (
     <View style={{ flexDirection: 'row' }}>
@@ -22,9 +59,15 @@ function Playlist() {
                 <PlaylistCard
                   playlistData={data}
                   onClickDetail={setVisibleDetailPlaylist}
+                  handleOnClickDownloadAll={handleOnClickDownloadAll}
                 />
               </Grid>
             ))}
+            {allPlaylist.length === 0 && (
+              <Grid item xs={6}>
+                <Text>No Playlist</Text>
+              </Grid>
+            )}
           </Grid>
         </ScrollView>
       </View>
@@ -42,19 +85,27 @@ function Playlist() {
         {visibleDetailPlaylist !== null && (
           <>
             <ScrollView style={{ maxHeight: '44vh' }}>
-              <Text style={cStyles.h2}>{visibleDetailPlaylist.name}</Text>
+              <Text style={cStyles.h2}>
+                {visibleDetailPlaylist.playlist_name}
+              </Text>
               <View style={{ marginTop: 20 }}>
                 <Text style={cStyles.body1}>Video:</Text>
-                {visibleDetailPlaylist.videos.map((value, index) => (
-                  <Text style={cStyles.body1} key={`video-${index}`}>{`${
-                    index + 1
-                  }. ${value}`}</Text>
+                {visibleDetailPlaylist.videos.urls.map((value, index) => (
+                  <Text style={cStyles.body1} key={`video-${index}`}>
+                    {`${index + 1}. `}
+                    <Link href={`https://youtu.be/${value}`}>
+                      {`https://youtu.be/${value}`}
+                    </Link>
+                  </Text>
                 ))}
               </View>
             </ScrollView>
             <Button
               variant="contained"
               sx={{ width: 'fit-content', marginTop: 2.5 }}
+              onClick={() =>
+                handleOnClickDownloadAll(visibleDetailPlaylist.videos.urls)
+              }
             >
               Download All
             </Button>
