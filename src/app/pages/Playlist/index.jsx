@@ -54,20 +54,21 @@ function Playlist() {
         <Text style={styles.pageTitle}>Playlist</Text>
         <ScrollView style={{ height: '58vh' }}>
           <Grid container spacing={2.5}>
-            {allPlaylist.map((data) => (
-              <Grid item xs={6} key={data.id}>
-                <PlaylistCard
-                  playlistData={data}
-                  onClickDetail={setVisibleDetailPlaylist}
-                  handleOnClickDownloadAll={handleOnClickDownloadAll}
-                />
-              </Grid>
-            ))}
-            {allPlaylist.length === 0 && (
+            {allPlaylist.length === 0 ? (
               <Grid item xs={6}>
                 <Text>No Playlist</Text>
               </Grid>
-            )}
+            ) : () => {
+              return allPlaylist.map((data) => (
+                <Grid item xs={6} key={data.id}>
+                  <PlaylistCard
+                    playlistData={data}
+                    onClickDetail={setVisibleDetailPlaylist}
+                    handleOnClickDownloadAll={handleOnClickDownloadAll}
+                  />
+                </Grid>
+              ))
+            }}
           </Grid>
         </ScrollView>
       </View>
