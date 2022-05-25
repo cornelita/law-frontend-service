@@ -63,6 +63,11 @@ function Playlist() {
                 />
               </Grid>
             ))}
+            {allPlaylist.length === 0 && (
+              <Grid item xs={6}>
+                <Text>No Playlist</Text>
+              </Grid>
+            )}
           </Grid>
         </ScrollView>
       </View>
@@ -85,7 +90,7 @@ function Playlist() {
               </Text>
               <View style={{ marginTop: 20 }}>
                 <Text style={cStyles.body1}>Video:</Text>
-                {visibleDetailPlaylist.videos.map((value, index) => (
+                {visibleDetailPlaylist.videos.urls.map((value, index) => (
                   <Text style={cStyles.body1} key={`video-${index}`}>
                     {`${index + 1}. `}
                     <Link href={`https://youtu.be/${value}`}>
@@ -99,7 +104,7 @@ function Playlist() {
               variant="contained"
               sx={{ width: 'fit-content', marginTop: 2.5 }}
               onClick={() =>
-                handleOnClickDownloadAll(visibleDetailPlaylist.videos)
+                handleOnClickDownloadAll(visibleDetailPlaylist.videos.urls)
               }
             >
               Download All

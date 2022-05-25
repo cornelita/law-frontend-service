@@ -1,67 +1,23 @@
-// import config from "app/config";
-import { YOUTUBE_VIDEOS } from 'app/pages/Homepage/constants';
-// import axios from "axios";
+import config from 'app/config';
+import axios from 'axios';
 
-const dummiesResponse = {
-  data: {
-    data: [
-      {
-        id: 'playlist-1',
-        playlist_name: 'Playlist 1',
-        videos: YOUTUBE_VIDEOS.slice(0, 1),
-      },
-      {
-        id: 'playlist-2',
-        playlist_name: 'Playlist 2',
-        videos: YOUTUBE_VIDEOS.slice(0, 2),
-      },
-      {
-        id: 'playlist-3',
-        playlist_name: 'Playlist 3',
-        videos: YOUTUBE_VIDEOS,
-      },
-    ],
-  },
-};
-
-const dummyResponse = {
-  data: {
-    data: {
-      id: 'playlist-1',
-      playlist_name: 'Playlist 1',
-      videos: YOUTUBE_VIDEOS,
-    },
-  },
-};
-
-const dummyDeletedPlaylistResponse = {
-  data: {
-    description: 'playlist deleted',
-  },
-};
-
-const dummyDeletedVideoResponse = {
-  data: {
-    description: 'video deleted',
-  },
-};
-
-export const createPlaylist = async (playlistName, video) => {
+export const createPlaylist = async (playlistName, video, username) => {
   console.log(
     `Call createPlaylist with playlistName=${playlistName}, video=${video}`,
   );
   try {
-    // const response = await axios.post(`${config.API_PLAYLIST_URL}/api/playlist/create/`,
-    //   {
-    //     playlist_name: playlistName,
-    //     video,
-    //   },
-    // )
-    const response = dummyResponse;
+    const response = await axios.post(
+      `${config.API_PLAYLIST_URL}/api/playlist/`,
+      {
+        playlist_name: playlistName,
+        videos: video,
+        username,
+      },
+    );
     return response.data;
   } catch (err) {
     const message = `Error: ${
-      err.response?.data?.description ||
+      err.response?.data?.detail ||
       'Failed creating playlist, please try again later!'
     }`;
     return new Error(message);
@@ -71,18 +27,18 @@ export const createPlaylist = async (playlistName, video) => {
 export const getPlaylistById = async (id) => {
   console.log(`Call getPlaylistById with id=${id}`);
   try {
-    // const response = await axios.get(`${config.API_PLAYLIST_URL}/api/playlist/`,
-    //   {
-    //     params: {
-    //       id,
-    //     }
-    //   },
-    // )
-    const response = dummyResponse;
+    const response = await axios.get(
+      `${config.API_PLAYLIST_URL}/api/playlist/`,
+      {
+        params: {
+          id,
+        },
+      },
+    );
     return response.data;
   } catch (err) {
     const message = `Error: ${
-      err.response?.data?.description ||
+      err.response?.data?.detail ||
       'Failed retrieving playlist, please try again later!'
     }`;
     return new Error(message);
@@ -92,17 +48,17 @@ export const getPlaylistById = async (id) => {
 export const addVideoToPlaylist = async (id, video) => {
   console.log(`Call addVideoToPlaylist with id=${id}, video=${video}`);
   try {
-    // const response = await axios.post(`${config.API_PLAYLIST_URL}/api/playlist/`,
-    //   {
-    //     id,
-    //     video,
-    //   },
-    // )
-    const response = dummyResponse;
+    const response = await axios.put(
+      `${config.API_PLAYLIST_URL}/api/playlist/`,
+      {
+        id,
+        videos: video,
+      },
+    );
     return response.data;
   } catch (err) {
     const message = `Error: ${
-      err.response?.data?.description ||
+      err.response?.data?.detail ||
       'Failed to add video, please try again later!'
     }`;
     return new Error(message);
@@ -112,18 +68,18 @@ export const addVideoToPlaylist = async (id, video) => {
 export const deletePlaylist = async (id) => {
   console.log(`Call deletePlaylist with id=${id}`);
   try {
-    // const response = await axios.delete(`${config.API_PLAYLIST_URL}/api/playlist/`,
-    //   {
-    //     params: {
-    //       id,
-    //     }
-    //   },
-    // )
-    const response = dummyDeletedPlaylistResponse;
+    const response = await axios.delete(
+      `${config.API_PLAYLIST_URL}/api/playlist/`,
+      {
+        params: {
+          id,
+        },
+      },
+    );
     return response.data;
   } catch (err) {
     const message = `Error: ${
-      err.response?.data?.description ||
+      err.response?.data?.detail ||
       'Failed to delete playlist, please try again later!'
     }`;
     return new Error(message);
@@ -133,17 +89,17 @@ export const deletePlaylist = async (id) => {
 export const deleteVideoFromPlaylist = async (id, video) => {
   console.log(`Call deleteVideoFromPlaylist with id=${id}, video=${video}`);
   try {
-    // const response = await axios.post(`${config.API_PLAYLIST_URL}/api/playlist/delete-video/`,
-    //   {
-    //     id,
-    //     video,
-    //   },
-    // )
-    const response = dummyDeletedVideoResponse;
+    const response = await axios.post(
+      `${config.API_PLAYLIST_URL}/api/playlist/`,
+      {
+        id,
+        video,
+      },
+    );
     return response.data;
   } catch (err) {
     const message = `Error: ${
-      err.response?.data?.description ||
+      err.response?.data?.detail ||
       'Failed to delete video, please try again later!'
     }`;
     return new Error(message);
@@ -153,18 +109,18 @@ export const deleteVideoFromPlaylist = async (id, video) => {
 export const getAllPlaylistByUser = async (username) => {
   console.log(`Call getAllPlaylistByUser with username=${username}`);
   try {
-    // const response = await axios.get(`${config.API_PLAYLIST_URL}/api/playlist/`,
-    //   {
-    //     params: {
-    //       username,
-    //     }
-    //   },
-    // )
-    const response = dummiesResponse;
-    return response.data;
+    const response = await axios.get(
+      `${config.API_PLAYLIST_URL}/api/playlist/`,
+      {
+        params: {
+          username,
+        },
+      },
+    );
+    return { data: response.data };
   } catch (err) {
     const message = `Error: ${
-      err.response?.data?.description ||
+      err.response?.data?.detail ||
       'Failed retrieving playlist, please try again later!'
     }`;
     return new Error(message);

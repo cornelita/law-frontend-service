@@ -46,7 +46,7 @@ function AddToPlaylist(props) {
   };
 
   const onClickCreatePlaylist = async () => {
-    const response = await createPlaylist(playlistName, idVideo);
+    const response = await createPlaylist(playlistName, idVideo, username);
 
     if (response instanceof Error) {
       alert(response.message);
@@ -99,7 +99,9 @@ function AddToPlaylist(props) {
           {allPlaylist.map(({ id, playlist_name, videos }) => (
             <FormControlLabel
               key={`playlist-${id}`}
-              control={<Checkbox checked={videos.indexOf(idVideo) !== -1} />}
+              control={
+                <Checkbox checked={videos.urls.indexOf(idVideo) !== -1} />
+              }
               label={playlist_name}
               value={id}
               onChange={handleCheckboxClick}

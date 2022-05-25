@@ -24,7 +24,9 @@ function PlaylistCard(props) {
         title={<Text style={cStyles.h2}>{playlistData.playlist_name}</Text>}
       />
       <CardContent>
-        <Text style={cStyles.body1}>{playlistData.videos.length} videos</Text>
+        <Text style={cStyles.body1}>
+          {playlistData.videos.urls.length} videos
+        </Text>
       </CardContent>
       <CardActions>
         <Button variant="contained" onClick={handleOnClickDetail}>
@@ -32,7 +34,7 @@ function PlaylistCard(props) {
         </Button>
         <Button
           variant="contained"
-          onClick={() => handleOnClickDownloadAll(playlistData.videos)}
+          onClick={() => handleOnClickDownloadAll(playlistData.videos.urls)}
         >
           Download All
         </Button>
@@ -43,9 +45,11 @@ function PlaylistCard(props) {
 
 PlaylistCard.propTypes = {
   playlistData: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     playlist_name: PropTypes.string,
-    videos: PropTypes.arrayOf(PropTypes.string),
+    videos: PropTypes.shape({
+      urls: PropTypes.arrayOf(PropTypes.string),
+    }),
   }).isRequired,
   onClickDetail: PropTypes.func.isRequired,
   handleOnClickDownloadAll: PropTypes.func.isRequired,
