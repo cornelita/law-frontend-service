@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import config from 'app/config';
 import { login, logout } from './index';
+import { clearBulkDownload } from '../download';
 
 export const loginUser = async (userData, dispatch) => {
   axios.defaults.headers.common.Authorization = null;
@@ -49,6 +50,7 @@ export const logoutUser = async (dispatch) => {
     }
 
     dispatch(logout());
+    dispatch(clearBulkDownload());
   } catch (err) {
     const message = `Error: ${
       err.response?.data?.detail || 'Please try again later'

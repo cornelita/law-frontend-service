@@ -25,6 +25,9 @@ export const downloadSlice = createSlice({
       const idx = state.value.bulkDownload.indexOf(action.payload);
       state.value.bulkDownload.splice(idx, 1);
     },
+    clearBulkDownload: (state) => {
+      state.value.bulkDownload = [];
+    },
   },
 });
 
@@ -33,6 +36,7 @@ export const {
   addBulkDownload,
   removeDownload,
   removeBulkDownload,
+  clearBulkDownload,
 } = downloadSlice.actions;
 
 export default downloadSlice.reducer;
