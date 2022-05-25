@@ -35,8 +35,21 @@ export const getBulkDownload = async (bulkDownloadId) => {
 
     return FileDownload(response.data, `video-${Date.now()}.zip`);
   } catch (err) {
+    let responseMessage;
+    if (err.response?.data) {
+      responseMessage = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          resolve(JSON.parse(e.target.result));
+        };
+
+        reader.onerror = reject;
+        reader.readAsText(err.response.data);
+      });
+    }
     const message = `Error: ${
-      err.response?.data?.detail ||
+      responseMessage?.detail ||
       'Get Bulk Download failed, please try again later!'
     }`;
     return new Error(message);
