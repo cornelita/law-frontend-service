@@ -56,7 +56,6 @@ function ProcessStatus(props) {
   useEffect(() => {
     return () => {
       clearInterval(idInterval);
-      client.close();
     };
   });
 
