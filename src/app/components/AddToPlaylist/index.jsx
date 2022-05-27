@@ -19,7 +19,7 @@ import {
   deleteVideoFromPlaylist,
   getAllPlaylistByUser,
 } from 'app/api/playlist';
-import { View } from 'react-native-web';
+import { View, Text } from 'react-native-web';
 import { useSelector } from 'react-redux';
 
 function AddToPlaylist(props) {
@@ -107,6 +107,7 @@ function AddToPlaylist(props) {
               onChange={handleCheckboxClick}
             />
           ))}
+          {allPlaylist.length === 0 && <Text>No playlist</Text>}
         </View>
       </DialogContent>
       <Divider sx={{ borderWidth: 8 }} />
