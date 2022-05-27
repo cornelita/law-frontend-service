@@ -36,7 +36,7 @@ function Playlist() {
     };
 
     getData();
-  });
+  }, [username, navigate]);
 
   const handleOnClickDownloadAll = async (videos) => {
     const response = await bulkDownload(videos);
@@ -58,17 +58,19 @@ function Playlist() {
               <Grid item xs={6}>
                 <Text>No Playlist</Text>
               </Grid>
-            ) : () => {
-              return allPlaylist.map((data) => (
-                <Grid item xs={6} key={data.id}>
-                  <PlaylistCard
-                    playlistData={data}
-                    onClickDetail={setVisibleDetailPlaylist}
-                    handleOnClickDownloadAll={handleOnClickDownloadAll}
-                  />
-                </Grid>
-              ))
-            }}
+            ) : (
+              () => {
+                return allPlaylist.map((data) => (
+                  <Grid item xs={6} key={data.id}>
+                    <PlaylistCard
+                      playlistData={data}
+                      onClickDetail={setVisibleDetailPlaylist}
+                      handleOnClickDownloadAll={handleOnClickDownloadAll}
+                    />
+                  </Grid>
+                ));
+              }
+            )}
           </Grid>
         </ScrollView>
       </View>

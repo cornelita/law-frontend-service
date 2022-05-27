@@ -39,7 +39,7 @@ function AddToPlaylist(props) {
     };
 
     getData();
-  });
+  }, [username]);
 
   const handlePlaylistNameChange = (event) => {
     setPlaylistName(event.target.value);
